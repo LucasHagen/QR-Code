@@ -1,4 +1,4 @@
-package sample;
+package br.inf.ufrgs.qrcode;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +10,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("controllers/home.fxml"));
         primaryStage.setTitle("Image-based QR Code");
         primaryStage.setScene(new Scene(root, 940, 407));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
