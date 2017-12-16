@@ -79,6 +79,9 @@ public class HomeController implements Initializable {
 
         File file = chooser.showOpenDialog(Main.getInstance().getStage());
 
+        if(file == null)
+            return;
+
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
             WritableImage image = SwingFXUtils.toFXImage(bufferedImage, null);
