@@ -1,5 +1,7 @@
 package br.inf.ufrgs.qrcode.controllers;
 
+import br.inf.ufrgs.qrcode.Main;
+import br.inf.ufrgs.qrcode.image.HalftoneImage;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -9,9 +11,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.stage.FileChooser;
+import marvin.io.MarvinImageIO;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -28,6 +38,10 @@ public class HomeController implements Initializable {
     }
 
     private void setQRCode(String text) {
+        if(text.isEmpty()) {
+            return;
+        }
+
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         int width = 300;
         int height = 300;
@@ -59,6 +73,30 @@ public class HomeController implements Initializable {
 
     }
 
+    public void loadNewImage() {
+        FileChooser chooser = new FileChooser();
 
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+        chooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+        File file = chooser.showOpenDialog(Main.getInstance().getStage());
+
+        try {
+            BufferedImage bufferedImage = ImageIO.read(file);
+            WritableImage image = SwingFXUtils.toFXImage(bufferedImage, null);
+            originalImage.setImage(image);
+
+            updateHalftoneImage();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void updateHalftoneImage() {
+        HalftoneImage image = new HalftoneImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
+        halftoneImage.setImage(image);
+    }
 
 }

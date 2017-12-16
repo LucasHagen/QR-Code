@@ -8,17 +8,40 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private static Main instance;
+
+    private Stage stage;
+    private Scene scene;
+
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        instance = this;
+
         Parent root = FXMLLoader.load(getClass().getResource("controllers/home.fxml"));
         primaryStage.setTitle("Image-based QR Code");
-        primaryStage.setScene(new Scene(root, 940, 433));
         primaryStage.setResizable(false);
+
+        this.stage = primaryStage;
+        this.scene = new Scene(root, 940, 433);
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 }
