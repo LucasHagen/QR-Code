@@ -15,14 +15,15 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         instance = this;
 
-        Parent root = FXMLLoader.load(getClass().getResource("controllers/home.fxml"));
         primaryStage.setTitle("Image-based QR Code");
         primaryStage.setResizable(false);
 
         this.stage = primaryStage;
+
+        Parent root = FXMLLoader.load(getClass().getResource("controllers/home.fxml"));
         this.scene = new Scene(root, 940, 433);
 
         primaryStage.setScene(scene);

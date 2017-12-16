@@ -1,7 +1,7 @@
 package br.inf.ufrgs.qrcode.controllers;
 
 import br.inf.ufrgs.qrcode.Main;
-import br.inf.ufrgs.qrcode.image.HalftoneImage;
+import br.inf.ufrgs.qrcode.image.HBImage;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -11,11 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
-import marvin.io.MarvinImageIO;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -76,7 +73,6 @@ public class HomeController implements Initializable {
     public void loadNewImage() {
         FileChooser chooser = new FileChooser();
 
-        //Set extension filter
         FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
         FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
         chooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
@@ -95,7 +91,7 @@ public class HomeController implements Initializable {
     }
 
     private void updateHalftoneImage() {
-        HalftoneImage image = new HalftoneImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
+        HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
         halftoneImage.setImage(image);
     }
 
