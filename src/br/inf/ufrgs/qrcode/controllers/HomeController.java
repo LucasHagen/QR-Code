@@ -7,9 +7,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,9 +17,8 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
-    @FXML TextField textInput;
-    @FXML
-    ImageView originalImage;
+    @FXML TextArea textInput;
+    @FXML ImageView originalImage;
     @FXML ImageView halftoneImage;
     @FXML ImageView qrCodeImage;
 
@@ -31,8 +29,8 @@ public class HomeController implements Initializable {
 
     private void setQRCode(String text) {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        int width = 100;
-        int height = 100;
+        int width = 300;
+        int height = 300;
 
         BufferedImage bufferedImage = null;
         try {
@@ -53,13 +51,12 @@ public class HomeController implements Initializable {
                 }
             }
 
-            System.out.println("Success...");
-
         } catch (WriterException e) {
             e.printStackTrace();
         }
+        if(bufferedImage != null)
+            qrCodeImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
 
-        qrCodeImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
     }
 
 

@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("controllers/home.fxml"));
         primaryStage.setTitle("Image-based QR Code");
-        primaryStage.setScene(new Scene(root, 940, 407));
+        primaryStage.setScene(new Scene(root, 940, 433));
         primaryStage.setResizable(false);
         primaryStage.show();
     }
