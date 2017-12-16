@@ -92,6 +92,7 @@ public class HomeController implements Initializable {
 
     private void updateHalftoneImage() {
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
+        image.toHalftoneErrorDiffusion();
         halftoneImage.setImage(image);
     }
 
