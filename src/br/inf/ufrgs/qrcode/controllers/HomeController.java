@@ -43,7 +43,10 @@ public class HomeController implements Initializable {
         }
 
         try {
-            qrCode = QRCodeImage.fromImage(text, originalImage.getImage());
+            if(mode == Mode.COLOR_IMAGE)
+                qrCode = QRCodeImage.fromImage(text, originalImage.getImage());
+            else
+                qrCode = QRCodeImage.fromImage(text, halftoneImage.getImage());
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -90,13 +93,17 @@ public class HomeController implements Initializable {
         updateHalftoneImage();
     }
 
+    public void setModeToColorImage(){
+        mode = Mode.COLOR_IMAGE;
+    }
+
 
     private void updateHalftoneImage() {
         if(originalImage.getImage() == null)
             return;
 
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
-        //image.resizeImage((int)qrCodeImage.getImage().getWidth(), (int)qrCodeImage.getImage().getHeight());
+        image.resizeImage((int)qrCodeImage.getImage().getWidth(), (int)qrCodeImage.getImage().getHeight());
 
         switch (mode) {
             case SIMPLE_HALFTONE:

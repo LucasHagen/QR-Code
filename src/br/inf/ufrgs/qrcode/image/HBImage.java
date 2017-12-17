@@ -87,7 +87,7 @@ public class HBImage extends WritableImage {
 
     public HBImage resizeImage(int newWidth, int newHeight) {
         ImageView imageView = new ImageView(this);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(false);
         imageView.setFitWidth(newWidth);
         imageView.setFitHeight(newHeight);
         return new HBImage(imageView.snapshot(null, null).getPixelReader(), newWidth, newHeight);
