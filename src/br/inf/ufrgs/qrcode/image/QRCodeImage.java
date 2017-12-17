@@ -26,6 +26,7 @@ public class QRCodeImage extends WritableImage {
 
     public static QRCodeImage fromImage(String text, Image image) throws WriterException {
         QRCode qrCode = getQrCode(text);
+
         return new QRCodeImage(text, qrCode, image);
     }
 
@@ -38,11 +39,14 @@ public class QRCodeImage extends WritableImage {
 
         getQRCodeDataMask();
 
-        /*if(sourceImage.getHeight() != getHeight() && sourceImage.getWidth() != getWidth())
-            sourceImage = sourceImage.resize(getWidth(), getHeight());*/
+        if(sourceImage != null) {
+            if(!(sourceImage instanceof HBImage))
+                sourceImage = new HBImage(sourceImage);
+
+            sourceImage = ((HBImage) sourceImage).resizeImage((int) getWidth(), (int) getHeight());
+        }
 
         build(sourceImage);
-
     }
 
     private void build(Image sourceImage) {
