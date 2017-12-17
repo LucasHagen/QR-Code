@@ -90,9 +90,7 @@ public class QRCodeImage extends WritableImage {
             for (int j = 0; j < PIXEL_SIZE; j++) {
 
                 if((i == 0 || j == 0 || i == PIXEL_SIZE - 1 || j == PIXEL_SIZE - 1) && sourceImage != null) {
-
                     getPixelWriter().setColor(x + i, y + j, sourceImage.getPixelReader().getColor(x + i, y + i));
-
                 } else {
                     getPixelWriter().setColor(x + i, y + j, color);
                 }
