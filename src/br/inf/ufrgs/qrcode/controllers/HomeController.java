@@ -3,10 +3,8 @@ package br.inf.ufrgs.qrcode.controllers;
 import br.inf.ufrgs.qrcode.Main;
 import br.inf.ufrgs.qrcode.image.HBImage;
 import br.inf.ufrgs.qrcode.image.Mode;
-import com.google.zxing.BarcodeFormat;
+import br.inf.ufrgs.qrcode.image.QRCodeImage;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +14,6 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +23,8 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
 
     private Mode mode = Mode.SIMPLE_HALFTONE;
+
+    private QRCodeImage qrCode;
 
     @FXML TextArea textInput;
     @FXML ImageView originalImage;
@@ -42,35 +41,14 @@ public class HomeController implements Initializable {
             return;
         }
 
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        int width = 300;
-        int height = 300;
-
-        BufferedImage bufferedImage = null;
         try {
-            BitMatrix byteMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
-            bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            bufferedImage.createGraphics();
-
-            Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, width, height);
-            graphics.setColor(Color.BLACK);
-
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (byteMatrix.get(i, j)) {
-                        graphics.fillRect(i, j, 1, 1);
-                    }
-                }
-            }
-
+            qrCode = new QRCodeImage(text, qrCodeImage.getFitWidth(), qrCodeImage.getFitHeight());
         } catch (WriterException e) {
             e.printStackTrace();
         }
-        if(bufferedImage != null)
-            qrCodeImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
 
+        if(qrCode != null)
+            qrCodeImage.setImage(qrCode);
     }
 
     public void loadNewImage() {
