@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
  */
 public class QRCodeImage extends WritableImage {
 
-    private static ErrorCorrectionLevel ERROR_CORRECTION_LEVEL = ErrorCorrectionLevel.H;
+    private static ErrorCorrectionLevel ERROR_CORRECTION_LEVEL = ErrorCorrectionLevel.L;
     private static int PIXEL_SIZE = 3;
 
     private String text;

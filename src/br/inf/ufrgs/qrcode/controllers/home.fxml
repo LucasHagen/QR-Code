@@ -71,7 +71,7 @@
                      </content></TitledPane>
                   <TitledPane alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="326.0" prefWidth="302.0" text="QR Code">
                      <content>
-                        <ImageView fx:id="qrCodeImage" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="qrCodeImage" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" smooth="false" />
                      </content></TitledPane>
                </children>
             </HBox>

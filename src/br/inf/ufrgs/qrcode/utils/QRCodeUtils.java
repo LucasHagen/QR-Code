@@ -26,10 +26,9 @@ public class QRCodeUtils {
 
     public static void buildMatrix(ErrorCorrectionLevel ecLevel, Version version, int maskPattern, ByteMatrix matrix) throws WriterException {
         clearMatrix(matrix);
-        embedBasicPatterns(version, matrix);
+        embedBasicPatternsMask(version, matrix);
         embedTypeInfo(ecLevel, maskPattern, matrix);
         maybeEmbedVersionInfo(version, matrix);
-        //embedDataBits(dataBits, maskPattern, matrix);
     }
 
     public static void buildMatrix(BitArray dataBits, ErrorCorrectionLevel ecLevel, Version version, int maskPattern, ByteMatrix matrix) throws WriterException {
@@ -41,6 +40,13 @@ public class QRCodeUtils {
     }
 
     static void embedBasicPatterns(Version version, ByteMatrix matrix) throws WriterException {
+        embedPositionDetectionPatternsAndSeparators(matrix);
+        embedDarkDotAtLeftBottomCorner(matrix);
+        maybeEmbedPositionAdjustmentPatterns(version, matrix);
+        embedTimingPatterns(matrix);
+    }
+
+    static void embedBasicPatternsMask(Version version, ByteMatrix matrix) throws WriterException {
         embedPositionDetectionPatternsAndSeparators(matrix);
         embedDarkDotAtLeftBottomCorner(matrix);
         maybeEmbedPositionAdjustmentPatterns(version, matrix);

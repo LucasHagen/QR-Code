@@ -9,7 +9,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
@@ -34,19 +33,19 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textInput.textProperty().addListener((observable, oldValue, newValue) -> setQRCode(newValue));
+        textInput.textProperty().addListener((observable, oldValue, newValue) -> setQRCode());
     }
 
-    private void setQRCode(String text) {
-        if(text.isEmpty()) {
+    private void setQRCode() {
+        if(textInput.getText() != null && textInput.getText().isEmpty()) {
             return;
         }
 
         try {
             if(mode == Mode.COLOR_IMAGE)
-                qrCode = QRCodeImage.fromImage(text, originalImage.getImage());
+                qrCode = QRCodeImage.fromImage(textInput.getText(), originalImage.getImage());
             else
-                qrCode = QRCodeImage.fromImage(text, halftoneImage.getImage());
+                qrCode = QRCodeImage.fromImage(textInput.getText(), halftoneImage.getImage());
         } catch (WriterException e) {
             e.printStackTrace();
         }
