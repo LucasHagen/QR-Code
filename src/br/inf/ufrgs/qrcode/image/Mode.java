@@ -5,6 +5,6 @@ package br.inf.ufrgs.qrcode.image;
  */
 public enum Mode {
 
-    SIMPLE_HALFTONE, REGION_SIMILARITY_HALFTONE;
+    SIMPLE_HALFTONE, ERROR_DIFFUSAL_HALFTONE, DITHERING_HALFTONE;
 
 }

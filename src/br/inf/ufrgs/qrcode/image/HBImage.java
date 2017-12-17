@@ -57,6 +57,14 @@ public class HBImage extends WritableImage {
         importMarvinImage(image);
     }
 
+    public void toHalftoneDithering() {
+        MarvinImagePlugin imagePlugin = MarvinPluginLoader.loadImagePlugin("org.marvinproject.image.halftone.dithering.jar");
+        MarvinImage image = toMarvinImage();
+
+        imagePlugin.process(image, image);
+        importMarvinImage(image);
+    }
+
     public MarvinImage toMarvinImage() {
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(this, null);
         return new MarvinImage(bufferedImage);

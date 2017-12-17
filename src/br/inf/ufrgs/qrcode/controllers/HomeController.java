@@ -2,6 +2,7 @@ package br.inf.ufrgs.qrcode.controllers;
 
 import br.inf.ufrgs.qrcode.Main;
 import br.inf.ufrgs.qrcode.image.HBImage;
+import br.inf.ufrgs.qrcode.image.Mode;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -28,6 +29,8 @@ public class HomeController implements Initializable {
     @FXML ImageView originalImage;
     @FXML ImageView halftoneImage;
     @FXML ImageView qrCodeImage;
+
+    private static Mode mode = Mode.SIMPLE_HALFTONE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -93,9 +96,35 @@ public class HomeController implements Initializable {
         }
     }
 
+    public void setModeToSimpleHalftone(){
+        mode = Mode.SIMPLE_HALFTONE;
+        updateHalftoneImage();
+    }
+
+    public void setModeToErrorDiffusionHalftone(){
+        mode = Mode.ERROR_DIFFUSAL_HALFTONE;
+        updateHalftoneImage();
+    }
+
+    public void setModeToDitheringHalftone(){
+        mode = Mode.DITHERING_HALFTONE;
+        updateHalftoneImage();
+    }
+
+
     private void updateHalftoneImage() {
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
-        image.toHalftoneErrorDiffusion();
+
+        if(mode == Mode.SIMPLE_HALFTONE){
+            image.toGrayScale();
+            image.toHalftone();
+        }
+        if(mode == Mode.ERROR_DIFFUSAL_HALFTONE){
+            image.toHalftoneErrorDiffusion();
+        }
+        if(mode == Mode.DITHERING_HALFTONE){
+            image.toHalftoneDithering();
+        }
         halftoneImage.setImage(image);
     }
 
