@@ -9,6 +9,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
@@ -95,6 +96,7 @@ public class HomeController implements Initializable {
             return;
 
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
+        //image.resizeImage((int)qrCodeImage.getImage().getWidth(), (int)qrCodeImage.getImage().getHeight());
 
         switch (mode) {
             case SIMPLE_HALFTONE:
@@ -114,5 +116,6 @@ public class HomeController implements Initializable {
 
         halftoneImage.setImage(image);
     }
+
 
 }

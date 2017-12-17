@@ -1,6 +1,7 @@
 package br.inf.ufrgs.qrcode.image;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -8,6 +9,7 @@ import marvin.image.MarvinImage;
 import marvin.plugin.MarvinImagePlugin;
 import marvin.util.MarvinPluginLoader;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -77,6 +79,14 @@ public class HBImage extends WritableImage {
                 getPixelWriter().setArgb(x, y, marvinImage.getIntColor(x, y));
             }
         }
+    }
+
+    public HBImage resizeImage(int newWidth, int newHeight){
+        ImageView imageView = new ImageView(this);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(newWidth);
+        imageView.setFitHeight(newHeight);
+        return new HBImage(imageView.snapshot(null, null).getPixelReader(), newWidth, newHeight);
     }
 
 }

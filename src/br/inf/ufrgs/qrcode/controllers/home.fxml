@@ -5,6 +5,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -34,6 +35,8 @@
                   </RadioMenuItem>
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToErrorDiffusionHalftone" text="Error Diffusal Halftone" toggleGroup="$mode" />
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToDitheringHalftone" text="Dithering Halftone" toggleGroup="$mode" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <RadioMenuItem mnemonicParsing="false" onAction="#resizeImage" text="Resize Image" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
