@@ -25,12 +25,12 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
+    private Mode mode = Mode.SIMPLE_HALFTONE;
+
     @FXML TextArea textInput;
     @FXML ImageView originalImage;
     @FXML ImageView halftoneImage;
     @FXML ImageView qrCodeImage;
-
-    private static Mode mode = Mode.SIMPLE_HALFTONE;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -113,18 +113,27 @@ public class HomeController implements Initializable {
 
 
     private void updateHalftoneImage() {
+        if(originalImage.getImage() == null)
+            return;
+
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
 
-        if(mode == Mode.SIMPLE_HALFTONE){
-            image.toGrayScale();
-            image.toHalftone();
+        switch (mode) {
+            case SIMPLE_HALFTONE:
+                image.toHalftone();
+                break;
+            case ERROR_DIFFUSAL_HALFTONE:
+                image.toHalftoneErrorDiffusion();
+                break;
+            case DITHERING_HALFTONE:
+                image.toHalftoneDithering();
+                break;
+            default:
+                image.toHalftone();
+                break;
         }
-        if(mode == Mode.ERROR_DIFFUSAL_HALFTONE){
-            image.toHalftoneErrorDiffusion();
-        }
-        if(mode == Mode.DITHERING_HALFTONE){
-            image.toHalftoneDithering();
-        }
+
+
         halftoneImage.setImage(image);
     }
 

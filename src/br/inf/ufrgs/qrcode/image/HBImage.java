@@ -22,8 +22,6 @@ public class HBImage extends WritableImage {
 
     public HBImage(PixelReader reader, double width, double height) {
         super(reader, (int) width, (int) height);
-
-        toHalftoneErrorDiffusion();
     }
 
     public void toGrayScale() {
