@@ -43,7 +43,7 @@ public class HomeController implements Initializable {
         }
 
         try {
-            qrCode = new QRCodeImage(text, qrCodeImage.getFitWidth(), qrCodeImage.getFitHeight());
+            qrCode = QRCodeImage.fromImage(text, originalImage.getImage());
         } catch (WriterException e) {
             e.printStackTrace();
         }

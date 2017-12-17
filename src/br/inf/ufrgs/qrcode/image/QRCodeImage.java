@@ -1,67 +1,73 @@
 package br.inf.ufrgs.qrcode.image;
 
 import br.inf.ufrgs.qrcode.utils.QRCodeUtils;
-import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-
-import java.util.Map;
-import java.util.Random;
 
 /**
  * @author Lucas Hagen.
  */
 public class QRCodeImage extends WritableImage {
 
-    private static ErrorCorrectionLevel ERROR_CORRECTION_LEVEL = ErrorCorrectionLevel.L;
+    private static ErrorCorrectionLevel ERROR_CORRECTION_LEVEL = ErrorCorrectionLevel.H;
     private static int PIXEL_SIZE = 3;
-
-    private Random random;
 
     private String text;
     private QRCode qrCode;
+    private int dimension;
     private BitMatrix dataMask;
-    private Map<EncodeHintType, String> hints;
 
-    public QRCodeImage() {
-        super(300, 300);
+    public static QRCodeImage fromImage(String text, Image image) throws WriterException {
+        QRCode qrCode = getQrCode(text);
+        return new QRCodeImage(text, qrCode, image);
     }
 
-    public QRCodeImage(String text, double width, double height) throws WriterException {
-        super((int) width, (int) height);
+    private QRCodeImage(String text, QRCode qrCode, Image sourceImage) throws WriterException {
+        super(qrCode.getVersion().getDimensionForVersion() * PIXEL_SIZE, qrCode.getVersion().getDimensionForVersion() * PIXEL_SIZE);
 
-        this.random = new Random(System.currentTimeMillis());
         this.text = text;
-        getQrCode();
+        this.qrCode = qrCode;
+        this.dimension = qrCode.getVersion().getDimensionForVersion();
+
         getQRCodeDataMask();
 
+        /*if(sourceImage.getHeight() != getHeight() && sourceImage.getWidth() != getWidth())
+            sourceImage = sourceImage.resize(getWidth(), getHeight());*/
 
-        for (int x = 0; x < getQRCodeDataMask().getWidth(); x++) {
-            for (int y = 0; y < getQRCodeDataMask().getHeight(); y++) {
-                if (getQRCodeDataMask().get(x, y)) {
-                    if (getQrCode().getMatrix().get(x, y) == 0)
-                        setDataPixel(x, y, Color.WHITE);
-                    else
-                        setDataPixel(x, y, Color.BLACK);
+        build(sourceImage);
+
+    }
+
+    private void build(Image sourceImage) {
+
+        for (int x = 0; x < dimension; x++) {
+            for (int y = 0; y < dimension; y++) {
+                if (dataMask.get(x, y)) {
+                    if (qrCode.getMatrix().get(x, y) == 0) {
+                        setDataPixel(x, y, Color.WHITE, sourceImage);
+                    } else {
+                        setDataPixel(x, y, Color.BLACK, sourceImage);
+                    }
                 } else {
-                    if (getQrCode().getMatrix().get(x, y) == 0)
+                    if (qrCode.getMatrix().get(x, y) == 0) {
                         setPixel(x, y, Color.WHITE);
-                    else
+                    } else {
                         setPixel(x, y, Color.BLACK);
+                    }
                 }
             }
         }
 
     }
 
-    public void setPixel(int x, int y, Color color) {
+    private void setPixel(int x, int y, Color color) {
         x *= PIXEL_SIZE;
         y *= PIXEL_SIZE;
 
@@ -72,20 +78,21 @@ public class QRCodeImage extends WritableImage {
         }
     }
 
-    public void setDataPixel(int x, int y, Color color) {
+    private void setDataPixel(int x, int y, Color color, Image sourceImage) {
         x *= PIXEL_SIZE;
         y *= PIXEL_SIZE;
 
         for (int i = 0; i < PIXEL_SIZE; i++) {
             for (int j = 0; j < PIXEL_SIZE; j++) {
-                if((i == 0 || j == 0 || i == PIXEL_SIZE - 1 || j == PIXEL_SIZE - 1) && random.nextBoolean()) {
-                    if (random.nextBoolean())
-                        getPixelWriter().setColor(x + i, y + j, Color.BLACK);
-                    else
-                        getPixelWriter().setColor(x + i, y + j, Color.WHITE);
+
+                if((i == 0 || j == 0 || i == PIXEL_SIZE - 1 || j == PIXEL_SIZE - 1) && sourceImage != null) {
+
+                    getPixelWriter().setColor(x + i, y + j, sourceImage.getPixelReader().getColor(x + i, y + i));
+
                 } else {
                     getPixelWriter().setColor(x + i, y + j, color);
                 }
+
             }
         }
     }
@@ -116,9 +123,12 @@ public class QRCodeImage extends WritableImage {
         if (qrCode != null)
             return qrCode;
 
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
         qrCode = Encoder.encode(text, ERROR_CORRECTION_LEVEL);
         return qrCode;
+    }
+
+    private static QRCode getQrCode(String text) throws WriterException {
+        return Encoder.encode(text, ERROR_CORRECTION_LEVEL);
     }
 
 }
