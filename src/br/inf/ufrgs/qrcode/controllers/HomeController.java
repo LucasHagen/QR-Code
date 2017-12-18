@@ -8,6 +8,8 @@ import com.google.zxing.WriterException;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -28,24 +30,26 @@ public class HomeController implements Initializable {
 
     @FXML TextArea textInput;
     @FXML ImageView originalImage;
-    @FXML ImageView halftoneImage;
+    @FXML ImageView sourceImage;
     @FXML ImageView qrCodeImage;
+
+    @FXML CheckMenuItem keepAspectRatio;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textInput.textProperty().addListener((observable, oldValue, newValue) -> setQRCode());
+        textInput.textProperty().addListener((observable, oldValue, newValue) -> updateQRCode());
     }
 
-    private void setQRCode() {
+    private void updateQRCode() {
         if(textInput.getText() != null && textInput.getText().isEmpty()) {
             return;
         }
 
         try {
             if(mode == Mode.COLOR_IMAGE)
-                qrCode = QRCodeImage.fromImage(textInput.getText(), originalImage.getImage());
+                qrCode = QRCodeImage.fromImage(textInput.getText(), originalImage.getImage(), keepAspectRatio.isSelected());
             else
-                qrCode = QRCodeImage.fromImage(textInput.getText(), halftoneImage.getImage());
+                qrCode = QRCodeImage.fromImage(textInput.getText(), sourceImage.getImage(), keepAspectRatio.isSelected());
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -71,7 +75,8 @@ public class HomeController implements Initializable {
             WritableImage image = SwingFXUtils.toFXImage(bufferedImage, null);
             originalImage.setImage(image);
 
-            updateHalftoneImage();
+            updateSourceImage();
+            updateQRCode();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -79,30 +84,34 @@ public class HomeController implements Initializable {
 
     public void setModeToSimpleHalftone(){
         mode = Mode.SIMPLE_HALFTONE;
-        updateHalftoneImage();
+        updateSourceImage();
+        updateQRCode();
     }
 
     public void setModeToErrorDiffusionHalftone(){
         mode = Mode.ERROR_DIFFUSAL_HALFTONE;
-        updateHalftoneImage();
+        updateSourceImage();
+        updateQRCode();
     }
 
     public void setModeToDitheringHalftone(){
         mode = Mode.DITHERING_HALFTONE;
-        updateHalftoneImage();
+        updateSourceImage();
+        updateQRCode();
     }
 
     public void setModeToColorImage(){
         mode = Mode.COLOR_IMAGE;
+        updateSourceImage();
+        updateQRCode();
     }
 
 
-    private void updateHalftoneImage() {
+    private void updateSourceImage() {
         if(originalImage.getImage() == null)
             return;
 
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
-        image.resizeImage((int)qrCodeImage.getImage().getWidth(), (int)qrCodeImage.getImage().getHeight());
 
         switch (mode) {
             case SIMPLE_HALFTONE:
@@ -114,14 +123,24 @@ public class HomeController implements Initializable {
             case DITHERING_HALFTONE:
                 image.toHalftoneDithering();
                 break;
-            default:
-                image.toHalftone();
-                break;
         }
 
-
-        halftoneImage.setImage(image);
+        sourceImage.setImage(image);
     }
 
+    public void showAbout() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Fundamentals of Image Processing\n" +
+                "Image-Based QR Code"
+        );
+        alert.setContentText("Authors:\n" +
+                " - Lucas Hagen\n" +
+                " - Leonardo Bombardelli\n\n" +
+                " Professor: Manuel de Oliveira Neto"
+        );
+
+        alert.showAndWait();
+    }
 
 }

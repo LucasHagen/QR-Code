@@ -30,6 +30,10 @@ public class HBImage extends WritableImage {
         super(reader, (int) width, (int) height);
     }
 
+    public HBImage(int newWidth, int newHeight) {
+        super(newWidth, newHeight);
+    }
+
     public void toGrayScale() {
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
@@ -86,10 +90,29 @@ public class HBImage extends WritableImage {
     }
 
     public HBImage resizeImage(int newWidth, int newHeight) {
-        ImageView imageView = new ImageView(this);
+        return resizeImage(newWidth, newHeight, false);
+    }
+
+    public HBImage resizeImage(int newWidth, int newHeight, boolean keepAspectRatio) {
+        return resizeImage(this, newWidth, newHeight, keepAspectRatio);
+    }
+
+    public static HBImage resizeImage(Image image, int newWidth, int newHeight, boolean keepAspectRatio) {
+        ImageView imageView = new ImageView();
         imageView.setFitWidth(newWidth);
         imageView.setFitHeight(newHeight);
-        return new HBImage(imageView.snapshot(null, null).getPixelReader(), newWidth, newHeight);
+        imageView.setImage(image);
+        imageView.setPreserveRatio(keepAspectRatio);
+
+        WritableImage snapshot = imageView.snapshot(null, null);
+        HBImage newImage = new HBImage(newWidth, newHeight);
+        newImage.getPixelWriter().setPixels((int) (newWidth - snapshot.getWidth()) / 2,
+                (int) (newHeight - snapshot.getHeight()) / 2,
+                (int) snapshot.getWidth(), (int) snapshot.getHeight(),
+                snapshot.getPixelReader(),
+                0, 0);
+
+        return newImage;
     }
 
 }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -15,7 +20,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.inf.ufrgs.qrcode.controllers.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.inf.ufrgs.qrcode.controllers.HomeController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -35,11 +40,13 @@
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToErrorDiffusionHalftone" text="Error Diffusal Halftone" toggleGroup="$mode" />
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToDitheringHalftone" text="Dithering Halftone" toggleGroup="$mode" />
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToColorImage" text="Image with Color" toggleGroup="$mode" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <CheckMenuItem fx:id="keepAspectRatio" mnemonicParsing="false" text="KeepAspectRation" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#showAbout" text="About" />
             </items>
           </Menu>
         </menus>
@@ -65,9 +72,9 @@
                      <content>
                         <ImageView fx:id="originalImage" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" />
                      </content></TitledPane>
-                  <TitledPane alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="326.0" prefWidth="302.0" text="Halftone Image">
+                  <TitledPane alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="326.0" prefWidth="302.0" text="Source Image">
                      <content>
-                        <ImageView fx:id="halftoneImage" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="sourceImage" fitHeight="260.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true" />
                      </content></TitledPane>
                   <TitledPane alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="326.0" prefWidth="302.0" text="QR Code">
                      <content>
