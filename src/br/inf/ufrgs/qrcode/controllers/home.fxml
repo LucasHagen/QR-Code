@@ -27,7 +27,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#loadNewImage" text="Load Image" />
-                  <MenuItem mnemonicParsing="false" text="Save QR-Code" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Save QR-Code" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
