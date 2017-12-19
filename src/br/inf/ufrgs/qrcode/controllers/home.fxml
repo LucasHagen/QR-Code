@@ -2,23 +2,11 @@
 
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.inf.ufrgs.qrcode.controllers.HomeController">
    <top>
@@ -27,7 +15,9 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#loadNewImage" text="Load Image" />
-                  <MenuItem disable="true" mnemonicParsing="false" text="Save QR-Code" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveQRCode" text="Save QR-Code" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveSourceImage" text="Save Source Image" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -41,7 +31,7 @@
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToDitheringHalftone" text="Dithering Halftone" toggleGroup="$mode" />
                   <RadioMenuItem mnemonicParsing="false" onAction="#setModeToColorImage" text="Image with Color" toggleGroup="$mode" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <CheckMenuItem fx:id="keepAspectRatio" mnemonicParsing="false" text="KeepAspectRation" />
+                  <CheckMenuItem fx:id="keepAspectRatio" mnemonicParsing="false" onAction="#updateQRCode" text="KeepAspectRation" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
@@ -28,25 +29,30 @@ public class HomeController implements Initializable {
 
     private QRCodeImage qrCode;
 
-    @FXML TextArea textInput;
-    @FXML ImageView originalImage;
-    @FXML ImageView sourceImage;
-    @FXML ImageView qrCodeImage;
+    @FXML
+    TextArea textInput;
+    @FXML
+    ImageView originalImage;
+    @FXML
+    ImageView sourceImage;
+    @FXML
+    ImageView qrCodeImage;
 
-    @FXML CheckMenuItem keepAspectRatio;
+    @FXML
+    CheckMenuItem keepAspectRatio;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textInput.textProperty().addListener((observable, oldValue, newValue) -> updateQRCode());
     }
 
-    private void updateQRCode() {
-        if(textInput.getText() != null && textInput.getText().isEmpty()) {
+    public void updateQRCode() {
+        if (textInput.getText() != null && textInput.getText().isEmpty()) {
             return;
         }
 
         try {
-            if(mode == Mode.COLOR_IMAGE)
+            if (mode == Mode.COLOR_IMAGE)
                 qrCode = QRCodeImage.fromImage(textInput.getText(), originalImage.getImage(), keepAspectRatio.isSelected());
             else
                 qrCode = QRCodeImage.fromImage(textInput.getText(), sourceImage.getImage(), keepAspectRatio.isSelected());
@@ -54,7 +60,7 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
 
-        if(qrCode != null)
+        if (qrCode != null)
             qrCodeImage.setImage(qrCode);
     }
 
@@ -67,7 +73,7 @@ public class HomeController implements Initializable {
 
         File file = chooser.showOpenDialog(Main.getInstance().getStage());
 
-        if(file == null)
+        if (file == null)
             return;
 
         try {
@@ -82,25 +88,25 @@ public class HomeController implements Initializable {
         }
     }
 
-    public void setModeToSimpleHalftone(){
+    public void setModeToSimpleHalftone() {
         mode = Mode.SIMPLE_HALFTONE;
         updateSourceImage();
         updateQRCode();
     }
 
-    public void setModeToErrorDiffusionHalftone(){
+    public void setModeToErrorDiffusionHalftone() {
         mode = Mode.ERROR_DIFFUSAL_HALFTONE;
         updateSourceImage();
         updateQRCode();
     }
 
-    public void setModeToDitheringHalftone(){
+    public void setModeToDitheringHalftone() {
         mode = Mode.DITHERING_HALFTONE;
         updateSourceImage();
         updateQRCode();
     }
 
-    public void setModeToColorImage(){
+    public void setModeToColorImage() {
         mode = Mode.COLOR_IMAGE;
         updateSourceImage();
         updateQRCode();
@@ -108,7 +114,7 @@ public class HomeController implements Initializable {
 
 
     private void updateSourceImage() {
-        if(originalImage.getImage() == null)
+        if (originalImage.getImage() == null)
             return;
 
         HBImage image = new HBImage(originalImage.getImage().getPixelReader(), originalImage.getImage().getWidth(), originalImage.getImage().getHeight());
@@ -141,6 +147,33 @@ public class HomeController implements Initializable {
         );
 
         alert.showAndWait();
+    }
+
+    public void saveSourceImage() {
+        saveImage(sourceImage.getImage());
+    }
+
+    public void saveQRCode() {
+        saveImage(qrCode);
+    }
+
+    private void saveImage(Image image) {
+        FileChooser chooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+        chooser.getExtensionFilters().addAll(extFilterJPG);
+
+        File file = chooser.showSaveDialog(Main.getInstance().getStage());
+
+        if(file == null)
+            return;
+
+        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+        try {
+            ImageIO.write(bImage, "png", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
