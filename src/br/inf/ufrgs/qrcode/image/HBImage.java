@@ -49,7 +49,7 @@ public class HBImage extends WritableImage {
             for (int y = 0; y < getHeight(); y++) {
                 Color original = getPixelReader().getColor(x, y);
 
-                if (original.getBrightness() < 1.0 / 2)
+                if (original.getBrightness() < 1.0 / 2 && original.getOpacity() == 1)
                     getPixelWriter().setColor(x, y, Color.BLACK);
                 else
                     getPixelWriter().setColor(x, y, Color.WHITE);
